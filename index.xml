@@ -17,7 +17,7 @@ a param named "extractors". This line is overridden by the extractor ID
 in the manifest, but is still expected to be present. -->
         <Require feature="google.contentmatch">
             <Param name="extractors">
-                google.com:EmailSubjectExtractor,google.com:EmailBodyExtractor,google.com:SenderEmailExtractor,google.com:ReceiverEmailExtractor
+                google.com:EmailSubjectExtractor,google.com:EmailBodyExtractor,google.com:SenderEmailExtractor,google.com:RecipientEmailExtractor
             </Param>
         </Require>
     </ModulePrefs>
@@ -74,9 +74,13 @@ in the manifest, but is still expected to be present. -->
                 window.open(url + dataValues);
                     
             });
+
+            gadgets.window.adjustHeight(200);
         });
 
       </script>
+
+      <input id="showbtn" type="submit" name="submit" value="Create Genome Ticket" />
 
     ]]>
   </Content>

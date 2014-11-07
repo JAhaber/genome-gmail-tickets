@@ -11,7 +11,7 @@
     <Name>Subject Extractor</Name>
     <Url>google.com:EmailSubjectExtractor</Url>
     <Param name="message_subject" value=".*"/>
-    <Triggers ref="showButton"/>
+    <Triggers ref="GetTicket"/>
     <Scope ref="ticket_subject"/>
     <Container name="mail"/>
   </Extension>
@@ -20,7 +20,7 @@
     <Name>Details Extractor</Name>
     <Url>google.com:EmailBodyExtractor</Url>
     <Param name="message_body" value=".*"/>
-    <Triggers ref="showButton"/>
+    <Triggers ref="GetTicket"/>
     <Scope ref="ticket_details"/>
     <Container name="mail"/>
   </Extension>
@@ -29,21 +29,21 @@
     <Name>Sender Extractor</Name>
     <Url>google.com:SenderEmailExtractor</Url>
     <Param name="message_sender" value=".*"/>
-    <Triggers ref="showButton"/>
+    <Triggers ref="GetTicket"/>
     <Scope ref="ticket_creator"/>
     <Container name="mail"/>
   </Extension>
  
   <Extension id="ReceiverExtractor" type="contextExtractor">
     <Name>Receiver Extractor</Name>
-    <Url>google.com:ReceiverEmailExtractor</Url>
+    <Url>google.com:RecipientEmailExtractor</Url>
     <Param name="message_receiver" value=".*"/>
-    <Triggers ref="showButton"/>
+    <Triggers ref="GetTicket"/>
     <Scope ref="ticket_assigned"/>
     <Container name="mail"/>
   </Extension>
  
-<Extension id="showButton" type="gadget">
+<Extension id="GetTicket" type="gadget">
   Genome-Gmail Ticket Creator
   <Url>https://github.com/JAhaber/genome-gmail-tickets/blob/master/index.xml</Url>
   <Container name="mail"/>
