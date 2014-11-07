@@ -1,60 +1,83 @@
-<?xml version="1.0" encoding="UTF-8" ?> 
+<?xml version="1.0" encoding="UTF-8"?>
+ 
 <Module>
-  <ModulePrefs title="Genome-Gmail Ticket Creator" /> 
- <UserPref name="myname" display_name="Name" default_value="Rowan"/>
-  <UserPref name="myphoto" display_name="Photo" default_value="http://doc.examples.googlepages.com/rowan-headshot.jpg"/>
-  <UserPref name="mychoice" display_name="Show Photo?" datatype="bool" default_value="true"/>
-  <UserPref name="mycolor" display_name="Color" default_value="Yellow" datatype="enum" >
-    <EnumValue value="Red" />
-     <EnumValue value="Aqua" />
-     <EnumValue value="Lime" />
-     <EnumValue value="Yellow" />
-     <EnumValue value="Pink" />
-     <EnumValue value="Orange" />
-     <EnumValue value="White" />
-   </UserPref>
-   <Content type="html"><![CDATA[
-   <div id="content_div"></div>
-   <script type="text/javascript">
-   // Get userprefs
-   var prefs = new gadgets.Prefs();
+    <ModulePrefs title="Genome-Gmail Ticket Creator"
+                 description=""
+                 height="20"
+                 author=""
+                 author_email=""
+                 author_location="">
+ 
+        <Require feature="dynamic-height"/>
+ 
+        <!-- The next feature, google.contentmatch, is required for all
+Gmail contextual gadgets.
+<Param> - specify one or more comma-separated extractor IDs in
+a param named "extractors". This line is overridden by the extractor ID
+in the manifest, but is still expected to be present. -->
+        <Require feature="google.contentmatch">
+            <Param name="extractors">
+                google.com:EmailSubjectExtractor,google.com:EmailBodyExtractor,google.com:SenderEmailExtractor,google.com:ReceiverEmailExtractor
+            </Param>
+        </Require>
+    </ModulePrefs>
+ 
+    <!-- Define the content type and display location. The settings
+"html" and "card" are required for all Gmail contextual gadgets. -->
+    <Content type="html" view="card">
+    <![CDATA[
 
-   function displayGreeting () {
-     // Get current time
-     var today = new Date();
-     var time = today.getTime();
-     var html = "";
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script type = "text/javascript">
+ 
+        $(document).ready(function()
+        {
+            var title;
+            var description;
+            var sender;
+            var assignee = [];
+            var project = "Klick - Office Technology";
+ 
+            //Gets all data from the email that was extracted and stores it in matches array.
+            matches = google.contentmatch.getContentMatches();
+            for(var match in matches)
+            {
+                for(var key in matches[match])
+                {
+                    if(key == 'message_subject')
+                    {
+                                                
+                        title = matches[match][key];
+                    }
+                    if(key == 'message_body')
+                    {
+                        description = matches[match][key];
+                    }
+                    if(key == 'message_sender')
+                    {
+                                                
+                        sender = matches[match][key];
+                    }
+                    if(key == 'message_receiver')
+                    {
+                        assignee.push(matches[match][key]);
+                    }
+ 
+                }
+            }
 
-     // Based on the time of day, display an appropriate greeting
-     var hour = today.getHours();
-     var salutation = "Afternoon";
-     if (hour < 12) {
-       salutation = "Morning";
-     } else if (hour > 17) {
-       salutation = "Evening";
-     }
+             $('#showbtn').click(function(){
+                //$('input[type=submit]', this).attr('disabled','disabled');
+                var dataValues = "Title=" + title + "&Description=Requested by: " + sender + "<div>" + description + "&AssignedToUserID=" + assignee[0] + "&ProjectID=" + project;
+                var url = "http://genome.klick.com/tasks/ticket/create?"
+                
+                window.open(url + dataValues);
+                    
+            });
+        });
 
-     // Set the background color according to the mycolor userpref
-     var element = document.getElementById('content_div');
-     element.style.height=250;
-     // Set the background color according to the mycolor userpref
-     element.style.backgroundColor=prefs.getString("mycolor");
+      </script>
 
-     // Display a greeting based on the myname userpref
-     html += "<br><FONT SIZE=6>Good " + salutation + ", " +
-           prefs.getString("myname") + "!!!<br><br></FONT>";
-
-     // If the "Show Photo?" checkbox is checked, display photo.
-     if (prefs.getBool("mychoice") == true) {
-       html += '<img src="' + prefs.getString("myphoto") + '">';
-     }
-     element.innerHTML = html;
-   }
-   // Pass the userprefs for this module instance to the function
-   // (allows users to include multiple module instances on their page)
-   gadgets.util.registerOnLoadHandler(displayGreeting);
-
-   </script>
-     ]]>
-  </Content> 
+    ]]>
+  </Content>
 </Module>

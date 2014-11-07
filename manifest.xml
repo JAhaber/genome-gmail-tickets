@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
+ 
+  <Name>Genome-Gmail Ticket Creator</Name>
+ 
+  <Description>
+    Turn gmail emails into Genome tickets with the click of a button!    
+  </Description>
+ 
+  <Extension id="SubjectExtractor" type="contextExtractor">
+    <Name>Subject Extractor</Name>
+    <Url>google.com:EmailSubjectExtractor</Url>
+    <Param name="message_subject" value=".*"/>
+    <Triggers ref="showButton"/>
+    <Scope ref="ticket_subject"/>
+    <Container name="mail"/>
+  </Extension>
+
+  <Extension id="DetailsExtractor" type="contextExtractor">
+    <Name>Details Extractor</Name>
+    <Url>google.com:EmailBodyExtractor</Url>
+    <Param name="message_body" value=".*"/>
+    <Triggers ref="showButton"/>
+    <Scope ref="ticket_details"/>
+    <Container name="mail"/>
+  </Extension>
+
+    <Extension id="SenderExtractor" type="contextExtractor">
+    <Name>Sender Extractor</Name>
+    <Url>google.com:SenderEmailExtractor</Url>
+    <Param name="message_sender" value=".*"/>
+    <Triggers ref="showButton"/>
+    <Scope ref="ticket_creator"/>
+    <Container name="mail"/>
+  </Extension>
+ 
+  <Extension id="ReceiverExtractor" type="contextExtractor">
+    <Name>Receiver Extractor</Name>
+    <Url>google.com:ReceiverEmailExtractor</Url>
+    <Param name="message_receiver" value=".*"/>
+    <Triggers ref="showButton"/>
+    <Scope ref="ticket_assigned"/>
+    <Container name="mail"/>
+  </Extension>
+ 
+<Extension id="showButton" type="gadget">
+  Genome-Gmail Ticket Creator
+  <Url>https://github.com/JAhaber/genome-gmail-tickets/blob/master/index.xml</Url>
+  <Container name="mail"/>
+</Extension>
+
+<Scope id="ticket_subject">
+   <Url>tag:google.com,2010:auth/contextual/extractor/SUBJECT</Url>
+   <Reason>This application searches for the Subject field of an email.</Reason>
+</Scope>
+
+<Scope id="ticket_details">
+   <Url>tag:google.com,2010:auth/contextual/extractor/BODY</Url>
+   <Reason>This application searches for the Body field of an email.</Reason>
+</Scope>
+
+<Scope id="ticket_creator">
+   <Url>tag:google.com,2010:auth/contextual/extractor/FROM_PERSONAL</Url>
+   <Reason>This application searches for the name of the sender of an email.</Reason>
+</Scope>
+
+<Scope id="ticket_assigned">
+   <Url>tag:google.com,2010:auth/contextual/extractor/TO_PERSONAL</Url>
+   <Reason>This application searches for the name of the receiver of an email.</Reason>
+</Scope>
+
+</ApplicationManifest>
